@@ -526,6 +526,14 @@ class MonthlyDistributionForm(models.Model):
                 total += request.cost
         return total
     
+    def past_month_sent_total(self, project):
+        total = 0
+        past_sent_qs = self.mdfitem_set.filter(work_project=project, category=constants.PAST_MONTH_SENT).exclude(cost__isnull=True)
+        for past_sent in past_sent_qs:
+            total += to_deductpast_sent.cost
+        return total
+        
+    
     def money_not_spent_to_deduct_total(self, project):
         total = 0
         to_deduct_qs = self.mdfitem_set.filter(work_project=project, category=constants.MONEY_NOT_SPENT, deduct='Yes').exclude(cost__isnull=True)

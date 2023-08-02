@@ -176,8 +176,7 @@ class ProjectRequestViewSet(viewsets.ModelViewSet):
                 project_request = serializer.save()
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-            
-            print('before', project_request.status, is_author, project_request.cost, project_request.original_cost)
+        
             if is_author:
                 project_request.cost = project_request.original_cost
                 if project_request.status != 'Submitted':

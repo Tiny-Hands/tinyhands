@@ -13,6 +13,8 @@ from dataentry.serializers import CountrySerializer
 from budget.models import BorderStationBudgetCalculation, MonthlyDistributionForm, MdfCombined, MdfItem, ProjectRequest, ProjectRequestComment, ProjectRequestDiscussion
 from budget.serializers import MonthlyDistributionFormSerializer, MdfItemSerializer
 from mailbox import MMDF
+from dataentry.background_form_work import BackgroundFormWork
+from export_import.mdf_io import export_country_mdf
 
 class BorderStationOverviewSerializer(serializers.ModelSerializer):
     operating_country = CountrySerializer()
@@ -214,6 +216,9 @@ class MonthlyDistributionFormViewSet(viewsets.ModelViewSet):
             
             stats.budget = total_budget
             stats.save()
+        
+        year_month = mdf.month_year.year * 100 + mdf.month_year.month
+        BackgroundFormWork.add_work(None, form_data={"mdf_export":True, "country_id":mdf.border_station.operating_country.id, "year_month":year_month})
         
         return True
     
