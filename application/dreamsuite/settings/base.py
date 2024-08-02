@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'portal',
     'budget',
     'id_matching',
+    'face_matching',
     'util',
     'static_border_stations',
     'rest_api',
